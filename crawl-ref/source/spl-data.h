@@ -1190,7 +1190,7 @@ static const struct spell_desc spelldata[] =
     spschool::earth,
     spflag::dir_or_target | spflag::not_self | spflag::needs_tracer,
     1,
-    50,
+    25,
     3, 3,
     1, 0,
     TILEG_SANDBLAST,
