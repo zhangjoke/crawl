@@ -1187,6 +1187,81 @@ static void _draw_wizmode_flag(const char *word)
     CPRINTF(" *%s*", word);
 }
 
+static string _get_species_name()
+{
+    if(!you_worship(GOD_BEOGH))
+        return species::name(you.species);
+    switch(you.species)
+    {
+        case SP_HILL_ORC:
+            return "Hill Orc";
+        case SP_MINOTAUR:
+            return "Minotorc";
+        case SP_MERFOLK:
+            return "Merforc";
+        case SP_GARGOYLE:
+            return "Gargorcle";
+        case SP_PALENTONGA:
+            return "Orcmadillo";
+        case SP_RED_DRACONIAN:
+            return "Red Orconian";
+        case SP_WHITE_DRACONIAN:
+            return "White Orconian";
+        case SP_YELLOW_DRACONIAN:
+            return "Yellow Orconian";
+        case SP_PURPLE_DRACONIAN:
+            return "Purple Orconian";
+        case SP_PALE_DRACONIAN:
+            return "Pale Orconian";
+        case SP_GREY_DRACONIAN:
+            return "Grey Orconian";
+        case SP_GREEN_DRACONIAN:
+            return "Green Orconian";
+        case SP_TROLL:
+            return "Trorc";
+        case SP_GHOUL:
+            return "Ghoulish Orc";
+        case SP_GNOLL:
+            return "Warg";
+        case SP_HUMAN:
+            return "Half Orc";
+        case SP_KOBOLD:
+            return "Orcobold";
+        case SP_DEMONSPAWN:
+            return "Demon Orc";
+        case SP_DJINNI:
+            return "Djorc";
+        case SP_SPRIGGAN:
+            return "Fey Orc";
+        case SP_TENGU:
+            return "Tengorc";
+        case SP_DEEP_ELF:
+            return "Deep Orc";
+        case SP_OGRE:
+            return "Orcgre";
+        case SP_DEEP_DWARF:
+            return "Deep Dworc";
+        case SP_VINE_STALKER:
+            return "Vine Orc";
+        case SP_VAMPIRE:
+            return "Orcula";
+        case SP_FORMICID:
+            return "Orcmicid";
+        case SP_NAGA:
+            return "Nagorc";
+        case SP_OCTOPODE:
+            return "Orctopode";
+        case SP_FELID:
+            return "Orcat";
+        case SP_BARACHI:
+            return "Frorc";
+        case SP_MUMMY:
+            return "Orc Mummy";
+        default:
+            return "Buggy Orc";
+    }
+}
+
 static void _redraw_title()
 {
     const unsigned int WIDTH = crawl_view.hudsz.x;
@@ -1238,7 +1313,7 @@ static void _redraw_title()
     // Minotaur [of God] [Piety]
     textcolour(YELLOW);
     CGOTOXY(1, 2, GOTO_STAT);
-    string species = species::name(you.species);
+    string species = _get_species_name();
     NOWRAP_EOL_CPRINTF("%s", species.c_str());
     if (you_worship(GOD_NO_GOD))
     {
