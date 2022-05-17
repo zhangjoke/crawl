@@ -75,7 +75,7 @@ static void _fedhas_neutralise_plant(monster* plant);
 /// For followers of Beogh, decide whether orcs will join you.
 void beogh_follower_convert(monster* mons, bool orc_hit)
 {
-    if (!species::is_orcish(you.species) || crawl_state.game_is_arena())
+    if (crawl_state.game_is_arena())
         return;
 
     if (!will_have_passive(passive_t::convert_orcs)

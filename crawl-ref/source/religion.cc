@@ -3551,9 +3551,6 @@ bool player_can_join_god(god_type which_god, bool temp)
         return false;
     }
 
-    if (which_god == GOD_BEOGH && !species::is_orcish(you.species))
-        return false;
-
     if (which_god == GOD_GOZAG && temp && you.gold < gozag_service_fee())
         return false;
 
