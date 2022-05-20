@@ -1203,6 +1203,8 @@ static string _get_species_name()
             return "Gargorcle";
         case SP_PALENTONGA:
             return "Orcmadillo";
+        case SP_BASE_DRACONIAN:
+            return "Orconian";
         case SP_RED_DRACONIAN:
             return "Red Orconian";
         case SP_WHITE_DRACONIAN:
