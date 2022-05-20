@@ -1230,7 +1230,7 @@ static string _get_species_name()
         case SP_DEMONSPAWN:
             return "Demon Orc";
         case SP_DJINNI:
-            return "Djorc";
+            return "Lava Orc";
         case SP_SPRIGGAN:
             return "Fey Orc";
         case SP_TENGU:
@@ -1238,7 +1238,7 @@ static string _get_species_name()
         case SP_DEEP_ELF:
             return "Deep Orc";
         case SP_OGRE:
-            return "Orcgre";
+            return "Ogrillion";
         case SP_DEEP_DWARF:
             return "Deep Dworc";
         case SP_VINE_STALKER:
