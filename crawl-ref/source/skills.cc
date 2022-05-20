@@ -2060,6 +2060,25 @@ unsigned int skill_exp_needed(int lev, skill_type sk, species_type sp)
     return _get_skill_cost_for(lev) * species_apt_factor(sk, sp);
 }
 
+static int _beogh_apt_mod(skill_type skill)
+{
+    if (!have_passive(passive_t::orcified_apts))
+        return 0;
+    switch (skill)
+    {
+        case SK_ARMOUR:
+        case SK_FIGHTING:
+        case SK_AXES:
+        case SK_SHIELDS:
+            return 1;
+        case SK_DODGING:
+        case SK_TRANSMUTATIONS:
+            return -1;
+        default:
+            return 0;
+    }
+}
+
 int species_apt(skill_type skill, species_type species)
 {
     static bool spec_skills_initialised = false;
@@ -2081,7 +2100,8 @@ int species_apt(skill_type skill, species_type species)
         spec_skills_initialised = true;
     }
 
-    return max(UNUSABLE_SKILL, _spec_skills[species][skill]
+    return max(UNUSABLE_SKILL, _spec_skills[species][skill] 
+                               + _beogh_apt_mod(skill)
                                - you.get_mutation_level(MUT_UNSKILLED));
 }
 
