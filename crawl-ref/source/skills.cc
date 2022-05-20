@@ -2100,7 +2100,7 @@ int species_apt(skill_type skill, species_type species)
         spec_skills_initialised = true;
     }
 
-    return max(UNUSABLE_SKILL, _spec_skills[species][skill] 
+    return max(UNUSABLE_SKILL, _spec_skills[species][skill]
                                + _beogh_apt_mod(skill)
                                - you.get_mutation_level(MUT_UNSKILLED));
 }

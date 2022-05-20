@@ -265,7 +265,7 @@ enum class passive_t
 
     // Immunity to spectral mist clouds
     r_spectral_mist,
-    
+
     // Orcified aptitudes
     orcified_apts,
 };

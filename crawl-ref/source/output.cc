@@ -1189,9 +1189,9 @@ static void _draw_wizmode_flag(const char *word)
 
 static string _get_species_name()
 {
-    if(!you_worship(GOD_BEOGH))
+    if (!you_worship(GOD_BEOGH))
         return species::name(you.species);
-    switch(you.species)
+    switch (you.species)
     {
         case SP_HILL_ORC:
             return "Hill Orc";
