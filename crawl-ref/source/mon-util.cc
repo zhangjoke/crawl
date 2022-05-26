@@ -896,8 +896,8 @@ bool mons_is_sensed(monster_type mc)
 
 bool mons_allows_beogh(const monster& mon)
 {
-    if (you_worship(GOD_BEOGH))
-        return false; // no one else gives a damn
+    if (you_worship(GOD_BEOGH) || you.has_mutation(MUT_FORLORN))
+        return false;
 
     return mons_genus(mon.type) == MONS_ORC
            && mon.is_priest() && mon.god == GOD_BEOGH;
