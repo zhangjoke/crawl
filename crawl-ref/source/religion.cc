@@ -240,8 +240,8 @@ const vector<vector<god_power>> & get_all_god_powers()
         },
 
         // Beogh
-        {   { 2, ABIL_BEOGH_SMITING, "smite your foes" },
-            { 3, "gain orcish followers" },
+        {   { 1, ABIL_BEOGH_ANOINT, "anoint orcish disciples"},
+            { 2, ABIL_BEOGH_SMITING, "smite your foes" },
             { 4, ABIL_BEOGH_RECALL_ORCISH_FOLLOWERS, "recall your orcish followers" },
             { 5, "walk on water" },
             { 5, ABIL_BEOGH_GIFT_ITEM, "give items to your followers" },
@@ -1924,8 +1924,6 @@ bool is_follower(const monster& mon)
 {
     if (you_worship(GOD_YREDELEMNUL))
         return is_yred_undead_slave(mon);
-    else if (will_have_passive(passive_t::convert_orcs))
-        return is_orcish_follower(mon);
     else if (you_worship(GOD_JIYVA))
         return is_fellow_slime(mon);
     else if (you_worship(GOD_FEDHAS))
@@ -4905,8 +4903,7 @@ static void _place_delayed_monsters()
         if (mon)
         {
             if (you_worship(GOD_YREDELEMNUL)
-                || you_worship(GOD_HEPLIAKLQANA)
-                || have_passive(passive_t::convert_orcs))
+                || you_worship(GOD_HEPLIAKLQANA))
             {
                 add_companion(mon);
             }

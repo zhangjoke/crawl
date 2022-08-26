@@ -4346,8 +4346,6 @@ void bolt::enchantment_affect_monster(monster* mon)
 {
     god_conduct_trigger conducts[3];
 
-    bool hit_woke_orc = false;
-
     // Nasty enchantments will annoy the monster, and are considered
     // naughty (even if a monster might resist).
     if (nasty_to(mon))
@@ -4356,12 +4354,6 @@ void bolt::enchantment_affect_monster(monster* mon)
         {
             set_attack_conducts(conducts, *mon, you.can_see(*mon));
 
-            if (have_passive(passive_t::convert_orcs)
-                && mons_genus(mon->type) == MONS_ORC
-                && mon->asleep() && you.see_cell(mon->pos()))
-            {
-                hit_woke_orc = true;
-            }
             if (flavour != BEAM_HIBERNATION)
                 you.pet_target = mon->mindex();
         }
@@ -4409,9 +4401,6 @@ void bolt::enchantment_affect_monster(monster* mon)
             update_hurt_or_helped(mon);
             break;
         }
-
-        if (hit_woke_orc)
-            beogh_follower_convert(mon, true);
     }
 
     extra_range_used += range_used_on_hit();
@@ -4530,9 +4519,6 @@ void bolt::monster_post_hit(monster* mon, int dmg)
     // purple draconian breath
     if (origin_spell == SPELL_QUICKSILVER_BOLT)
         debuff_monster(*mon);
-
-    if (dmg)
-        beogh_follower_convert(mon, true);
 
     knockback_actor(mon, dmg);
 

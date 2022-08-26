@@ -72,37 +72,6 @@ void mons_att_changed(monster* mon)
 static void _jiyva_convert_slime(monster* slime);
 static void _fedhas_neutralise_plant(monster* plant);
 
-/// For followers of Beogh, decide whether orcs will join you.
-void beogh_follower_convert(monster* mons, bool orc_hit)
-{
-    if (crawl_state.game_is_arena())
-        return;
-
-    if (!will_have_passive(passive_t::convert_orcs)
-        || mons_genus(mons->type) != MONS_ORC
-        || mons->is_summoned()
-        || mons->is_shapeshifter()
-        || testbits(mons->flags, MF_ATT_CHANGE_ATTEMPT)
-        || mons->friendly()
-        || mons->has_ench(ENCH_FIRE_CHAMPION))
-    {
-        return;
-    }
-
-    mons->flags |= MF_ATT_CHANGE_ATTEMPT;
-
-    const int hd = mons->get_experience_level();
-
-    if (have_passive(passive_t::convert_orcs)
-        && random2(you.piety / 15) + random2(4 + you.experience_level / 3)
-             > random2(hd) + hd + random2(5))
-    {
-        beogh_convert_orc(mons, orc_hit || !mons->alive() ? conv_t::deathbed
-                                                          : conv_t::sight);
-        stop_running();
-    }
-}
-
 void slime_convert(monster* mons)
 {
     if (have_passive(passive_t::neutral_slimes) && mons_is_slime(*mons)
@@ -286,9 +255,6 @@ void beogh_convert_orc(monster* orc, conv_t conv)
                                               orc->max_hit_points * 2 / 5));
     }
 
-    mons_make_god_gift(*orc, GOD_BEOGH);
-    add_companion(orc);
-
     // Avoid immobile "followers".
     behaviour_event(orc, ME_ALERT);
 
@@ -453,6 +419,5 @@ void gozag_break_bribe(monster* victim)
 // Conversions and bribes.
 void do_conversions(monster* target)
 {
-        beogh_follower_convert(target);
         gozag_check_bribe(target);
 }

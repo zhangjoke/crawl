@@ -421,6 +421,10 @@ any order. Subsequently, you can draw these cards in the order you chose.
 Re-using this ability will discard the current stack.
 %%%%
 # Beogh
+Anoint Disciple ability
+
+Anoints a fellow orc, making them one of your chosen followers. The number of
+orcs that can be made disciples will increase at higher levels of piety.
 Smiting ability
 
 [[Smiting spell]] The strength of the smiting is increased by Invocations skill.

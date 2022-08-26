@@ -112,6 +112,7 @@ void trog_remove_trogs_hand();
 bool given_gift(const monster* mons);
 bool beogh_can_gift_items_to(const monster* mons, bool quiet = true);
 bool beogh_gift_item();
+spret beogh_make_disciple(const coord_def& target, bool fail);
 bool beogh_resurrect();
 
 bool yred_can_bind_soul(monster* mon);

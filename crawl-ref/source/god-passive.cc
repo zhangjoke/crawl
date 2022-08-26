@@ -265,7 +265,6 @@ static const vector<god_passive> god_passives[] =
     {
         { -1, passive_t::share_exp, "share experience with your followers" },
         {  1, passive_t::orcified_apts, "modify your aptitudes" },
-        {  3, passive_t::convert_orcs, "inspire orcs to join your side" },
         {  3, passive_t::bless_followers,
               "GOD will bless your followers",
               "GOD will no longer bless your followers"

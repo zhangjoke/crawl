@@ -483,6 +483,8 @@ static vector<ability_def> &_get_ability_list()
             5, 0, 10, -1, {fail_basis::invo, 80, 4, 25}, abflag::none },
 
         // Beogh
+        { ABIL_BEOGH_ANOINT, "Anoint a Disciple",
+            0, 0, 4, LOS_MAX_RANGE, {fail_basis::invo}, abflag::target },
         { ABIL_BEOGH_SMITING, "Smiting",
             3, 0, generic_cost::range(3, 4), LOS_MAX_RANGE,
             {fail_basis::invo, 40, 5, 20}, abflag::none },
@@ -3111,6 +3113,9 @@ static spret _do_ability(const ability_def& abil, bool fail, dist *target,
 
     case ABIL_NEMELEX_STACK_FIVE:
         return deck_stack(fail);
+
+    case ABIL_BEOGH_ANOINT:
+        return beogh_make_disciple(beam.target, fail);
 
     case ABIL_BEOGH_SMITING:
         return your_spells(SPELL_SMITING, 12 + skill_bump(SK_INVOCATIONS, 6),

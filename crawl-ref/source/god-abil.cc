@@ -1623,6 +1623,44 @@ bool beogh_gift_item()
     return true;
 }
 
+// try to convert an orc to your cause
+spret beogh_make_disciple(const coord_def& target, bool fail)
+{
+    monster* mons = monster_at(target);
+    if (!mons || !you.can_see(*mons))
+    {
+        mpr("There's nobody there to convert!");
+        return spret::abort;
+    }
+
+    // no non-orcs, no summons, no ignis wrath enemies
+    if (mons_genus(mons->type) != MONS_ORC
+       || mons->is_summoned()
+       || mons->is_shapeshifter()
+       || mons->has_ench(ENCH_FIRE_CHAMPION))
+    {
+        mprf("%s is uninterested in your religion.", mons->name(DESC_THE).c_str());
+        return spret::abort;
+    }
+    if (mons->friendly())
+    {
+        mprf("%s is already a believer!", mons->name(DESC_THE).c_str());
+        return spret::abort;
+    }
+
+    fail_check();
+    const int hd = mons->get_experience_level();
+    if (random2(div_rand_round(you.piety, 7))
+        + random2(4 + div_rand_round(you.experience_level,2))
+             > random2(hd) + hd + random2(5))
+    {
+        beogh_convert_orc(mons, conv_t::sight);
+    }
+    else
+        mprf("The glory of Beogh fails to sway %s", mons->name(DESC_THE).c_str());
+    return spret::success;
+}
+
 bool beogh_resurrect()
 {
     item_def* corpse = nullptr;

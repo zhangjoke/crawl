@@ -315,7 +315,6 @@ void follower::restore_mons_items(monster& m)
 static bool _is_religious_follower(const monster &mon)
 {
     return (you_worship(GOD_YREDELEMNUL)
-            || will_have_passive(passive_t::convert_orcs)
             || you_worship(GOD_FEDHAS))
                 && is_follower(mon);
 }
