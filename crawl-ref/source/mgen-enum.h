@@ -124,6 +124,7 @@ enum band_type
     BAND_JELLYFISH,
     BAND_SKYSHARKS,
     BAND_UFETUBI,
+    BAND_BOMBARDIER,
     NUM_BANDS                   // always last
 };
 

@@ -1205,6 +1205,7 @@ enum monster_type                      // env.mons[].type
     MONS_ARCANIST,
     MONS_FLOATING_EYE,                 // genus
     MONS_ANTIQUE_CHAMPION,
+    MONS_KOBOLD_BOMBARDIER,
 #endif
 
     NUM_MONSTERS,               // used for polymorph
