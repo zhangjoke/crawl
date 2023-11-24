@@ -388,6 +388,9 @@ enum monster_type                      // env.mons[].type
     MONS_KOBOLD,
     MONS_KOBOLD_BRIGAND,
     MONS_KOBOLD_DEMONOLOGIST,
+#if TAG_MAJOR_VERSION > 34
+    MONS_KOBOLD_BOMBARDIER,
+#endif
     MONS_ORC,
     MONS_ORC_WARRIOR,
     MONS_ORC_PRIEST,
