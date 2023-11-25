@@ -112,3 +112,5 @@ spret summon_spiders(actor &agent, int pow, god_type god, bool fail = false);
 spret summon_butterflies();
 
 spret cast_broms_barrelling_boulder(actor& agent, coord_def pos, int pow, bool fail);
+
+bool summon_hell_out_of_bat(const actor &agent, coord_def pos);

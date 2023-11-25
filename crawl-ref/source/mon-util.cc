@@ -2239,7 +2239,8 @@ bool flavour_triggers_damageless(attack_flavour flavour)
         || flavour == AF_PURE_FIRE
         || flavour == AF_SHADOWSTAB
         || flavour == AF_DROWN
-        || flavour == AF_CORRODE;
+        || flavour == AF_CORRODE
+        || flavour == AF_HELL_HUNT;
 }
 
 /**

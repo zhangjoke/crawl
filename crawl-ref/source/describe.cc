@@ -4788,6 +4788,7 @@ static string _flavour_base_desc(attack_flavour flavour)
         { AF_WEAKNESS,          "cause weakness" },
         { AF_BARBS,             "embed barbs" },
         { AF_SPIDER,            "summon a spider" },
+        { AF_HELL_HUNT,         "summon demonic beasts" },
         { AF_BLOODZERK,         "become enraged on drawing blood" },
         { AF_SLEEP,             "induce sleep" },
         { AF_SWOOP,             "swoops behind the defender beforehand" },
