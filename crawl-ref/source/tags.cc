@@ -3419,6 +3419,7 @@ static void _tag_read_you(reader &th)
     SP_MUT_FIX(MUT_ACROBATIC, SP_TENGU);
     SP_MUT_FIX(MUT_DOUBLE_POTION_HEAL, SP_ONI);
     SP_MUT_FIX(MUT_DRUNKEN_BRAWLING, SP_ONI);
+    SP_MUT_FIX(MUT_WARMUP_STRIKES, SP_STEEL_ELF); // XXX revert before hitting master
 
     if (you.has_innate_mutation(MUT_NIMBLE_SWIMMER)
         || you.species == SP_MERFOLK || you.species == SP_OCTOPODE)
@@ -4355,7 +4356,7 @@ static void _tag_read_you_items(reader &th)
             if ((is_unrandom_artefact(*item, UNRAND_DISPATER)
                  || is_unrandom_artefact(*item, UNRAND_WUCAD_MU)
                  || is_unrandom_artefact(*item, UNRAND_BATTLE))
-                && i != EQ_SHIELD)
+                && i != EQ_OFFHAND)
             {
                 you.equip[i] = -1;
                 you.melded.set(i, false);

@@ -1089,7 +1089,7 @@ const char* item_slot_name(equipment_type type)
     case EQ_HELMET:      return "helmet";
     case EQ_GLOVES:      return "gloves";
     case EQ_BOOTS:       return "boots";
-    case EQ_SHIELD:      return "shield";
+    case EQ_OFFHAND:     return "shield";
     case EQ_BODY_ARMOUR: return "body";
     default:             return "";
     }

@@ -908,7 +908,7 @@ void spectral_weapon_fineff::fire()
     if (!seen_valid)
         return;
 
-    const item_def *weapon = atkr->weapon();
+    const item_def *weapon = offhand ? atkr->offhand_weapon() : atkr->weapon();
     if (!weapon)
         return;
 

@@ -46,6 +46,7 @@ stab_type find_stab_type(const actor *attacker,
 
 int stab_bonus_denom(stab_type stab);
 
+bool dont_harm(const actor &attacker, const actor &defender);
 bool force_player_cleave(coord_def target);
 bool attack_cleaves(const actor &attacker, int which_attack = -1);
 bool weapon_cleaves(const item_def &item);
@@ -61,7 +62,8 @@ void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              wu_jian_attack_type wu_jian_attack
                                = WU_JIAN_ATTACK_NONE,
                              bool is_projected = false,
-                             bool is_cleave = true);
+                             bool is_cleave = true,
+                             bool is_off_hand = false);
 
 class attack;
 int to_hit_pct(const monster_info& mi, attack &atk, bool melee);
@@ -75,6 +77,10 @@ int weapon_min_delay(const item_def &weapon, bool check_speed = true);
 int weapon_adjust_delay(const item_def &weapon, int base_delay, bool random = true);
 
 int mons_weapon_damage_rating(const item_def &launcher);
+
+bool player_unrand_bad_attempt(const item_def &weapon,
+                               const actor *defender,
+                               bool check_only);
 
 bool bad_attack(const monster *mon, string& adj, string& suffix,
                 bool& would_cause_penance,

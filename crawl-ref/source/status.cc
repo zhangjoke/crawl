@@ -170,6 +170,7 @@ static void _describe_terrain(status_info& inf);
 static void _describe_invisible(status_info& inf);
 static void _describe_zot(status_info& inf);
 static void _describe_gem(status_info& inf);
+static void _describe_rev(status_info& inf);
 
 bool fill_status_info(int status, status_info& inf)
 {
@@ -240,6 +241,10 @@ bool fill_status_info(int status, status_info& inf)
 
     case STATUS_GEM:
         _describe_gem(inf);
+        break;
+
+    case STATUS_REV:
+        _describe_rev(inf);
         break;
 
     case STATUS_AIRBORNE:
@@ -914,6 +919,34 @@ static void _describe_glow(status_info& inf)
     const int adj_i = min((size_t) cont, ARRAYSZ(contam_adjectives) - 1);
     inf.short_text = contam_adjectives[adj_i] + "contaminated";
     inf.long_text = describe_contamination(cont);
+}
+
+static void _describe_rev(status_info& inf)
+{
+    if (!you.has_mutation(MUT_WARMUP_STRIKES) || !you.rev_percent())
+        return;
+
+    const int perc = you.rev_percent();
+    if (perc < 25)
+    {
+        inf.light_colour = WHITE;
+        inf.light_text   = "Rev";
+        inf.short_text   = "revving";
+        inf.long_text    = "You're starting to limber up.";
+        return;
+    }
+    if (perc < 50)
+    {
+        inf.light_colour = BLUE;
+        inf.light_text   = "Rev+";
+        inf.short_text   = "revving";
+        inf.long_text    = "You're limbering up.";
+        return;
+    }
+    inf.light_colour = LIGHTBLUE;
+    inf.light_text   = "Rev*";
+    inf.short_text   = "revved";
+    inf.long_text    = "You're fully limbered up.";
 }
 
 static void _describe_regen(status_info& inf)

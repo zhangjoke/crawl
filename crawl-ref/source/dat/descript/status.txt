@@ -908,3 +908,18 @@ Rise status
 
 You are hovering upward toward the ceiling. After a short delay, Ignis' power
 will blast you into the level above.
+%%%%
+Rev status
+
+You're starting to limber up. Your weapon-based and unarmed attacks are closer
+to full strength, and will continue to grow more powerful with each swing.
+%%%%
+Rev+ status
+
+You're limbering up. Your weapon-based and unarmed attacks are close to full
+strength, and will continue to grow more powerful with each swing.
+%%%%
+Rev* status
+
+You're limbered up. Your weapon-based and unarmed attacks are at full strength,
+and will remain so as long as you keep swinging and for a short while afterward.

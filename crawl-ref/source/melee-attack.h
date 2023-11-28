@@ -4,6 +4,7 @@
 
 #include "attack.h"
 #include "fight.h"
+#include "item-prop-enum.h" // vorpal_damage_type
 #include "random-var.h"
 #include "tag-version.h"
 
@@ -37,6 +38,7 @@ public:
     bool         cleaving;        // additional attack from cleaving
     bool         is_multihit;     // quick blade follow-up attack
     bool         is_riposte;      // fencers' retaliation attack
+    bool         is_off_hand;     // used by two-weapon players only
     bool         is_projected;    // projected weapon spell attack
     int          charge_pow;      // electric charge bonus damage
     bool         never_cleave;    // if this attack shouldn't trigger cleave
@@ -49,7 +51,7 @@ public:
 public:
     melee_attack(actor *attacker, actor *defender,
                  int attack_num = -1, int effective_attack_num = -1,
-                 bool is_cleaving = false);
+                 bool is_offhand = false);
 
     // Applies attack damage and other effects.
     bool attack();
@@ -59,8 +61,6 @@ public:
     bool would_prompt_player();
 
     static void chaos_affect_actor(actor *victim);
-
-    int roll_delay() const;
 
 private:
     /* Attack phases */
@@ -86,9 +86,9 @@ private:
 
     void rot_defender(int amount);
 
-    bool consider_decapitation(int damage_done, int damage_type = -1);
-    bool attack_chops_heads(int damage_done, int damage_type);
-    void decapitate(int dam_type);
+    bool consider_decapitation(int damage_done);
+    bool attack_chops_heads(int damage_done);
+    void decapitate();
 
     /* Axe cleaving */
     void cleave_setup();
@@ -163,8 +163,11 @@ private:
     void player_warn_miss();
     void player_weapon_upsets_god();
     bool bad_attempt();
-    bool player_unrand_bad_attempt(bool check_only = false);
+    bool player_unrand_bad_attempt(const item_def *offhand,
+                                   bool check_only = false);
     void _defender_die();
+    void launch_offhand_attack(item_def &offhand);
+    void handle_spectral_brand();
 
     // Added in, were previously static methods of fight.cc
     bool _extra_aux_attack(unarmed_attack_type atk);
@@ -173,6 +176,10 @@ private:
     bool _vamp_wants_blood_from_monster(const monster* mon);
 
     bool can_reach();
+
+    item_def *offhand_weapon() const;
+
+    vorpal_damage_type damage_type;
 };
 
 string aux_attack_desc(unarmed_attack_type unat, int force_damage = -1);

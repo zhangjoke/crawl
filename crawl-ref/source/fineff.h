@@ -494,15 +494,19 @@ public:
     bool mergeable(const final_effect &) const override { return false; };
     void fire() override;
 
-    static void schedule(const actor &attack, const actor &defend)
+    static void schedule(const actor &attack, const actor &defend,
+                         bool offhand)
     {
-        final_effect::schedule(new spectral_weapon_fineff(attack, defend));
+        final_effect::schedule(new spectral_weapon_fineff(attack, defend, offhand));
     }
 protected:
-    spectral_weapon_fineff(const actor &attack, const actor &defend)
-        : final_effect(&attack, &defend, coord_def())
+    spectral_weapon_fineff(const actor &attack, const actor &defend,
+                           bool is_offhand)
+        : final_effect(&attack, &defend, coord_def()), offhand(is_offhand)
     {
     }
+
+    bool offhand;
 };
 
 class lugonu_meddle_fineff : public final_effect
