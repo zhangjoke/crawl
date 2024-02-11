@@ -1775,6 +1775,7 @@ void attract_monster(monster &mon, int max_move)
     mprf("%s is attracted toward you.", mon.name(DESC_THE).c_str());
 
     _place_tloc_cloud(old_pos);
+    _place_tloc_cloud(ray.pos());
     mon.apply_location_effects(old_pos);
     mons_relocated(&mon);
 }
