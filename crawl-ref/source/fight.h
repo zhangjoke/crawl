@@ -48,13 +48,14 @@ int stab_bonus_denom(stab_type stab);
 
 bool dont_harm(const actor &attacker, const actor &defender);
 bool force_player_cleave(coord_def target);
-bool attack_cleaves(const actor &attacker, int which_attack = -1);
+bool attack_cleaves(const actor &attacker, const item_def *weapon = nullptr);
 bool weapon_cleaves(const item_def &item);
 int weapon_hits_per_swing(const item_def &item);
 bool weapon_multihits(const item_def *item);
 void get_cleave_targets(const actor &attacker, const coord_def& def,
                         list<actor*> &targets, int which_attack = -1,
-                        bool force_cleaving = false);
+                        bool force_cleaving = false,
+                        const item_def *weapon = nullptr);
 // too many params... need to pass in a mini-struct or something
 void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              int attack_number = 0,
@@ -62,8 +63,7 @@ void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              wu_jian_attack_type wu_jian_attack
                                = WU_JIAN_ATTACK_NONE,
                              bool is_projected = false,
-                             bool is_cleave = true,
-                             bool is_off_hand = false);
+                             bool is_cleave = true);
 
 class attack;
 int to_hit_pct(const monster_info& mi, attack &atk, bool melee);

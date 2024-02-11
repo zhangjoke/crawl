@@ -586,7 +586,7 @@ namespace quiver
             args.self = confirm_prompt_type::cancel;
 
             unique_ptr<targeter> hitfunc;
-            if (attack_cleaves(you, -1))
+            if (attack_cleaves(you))
             {
                 const int range = reach_range;
                 hitfunc = make_unique<targeter_cleave>(&you, you.pos(), range);

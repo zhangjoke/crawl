@@ -495,18 +495,18 @@ public:
     void fire() override;
 
     static void schedule(const actor &attack, const actor &defend,
-                         bool offhand)
+                         const item_def *weapon)
     {
-        final_effect::schedule(new spectral_weapon_fineff(attack, defend, offhand));
+        final_effect::schedule(new spectral_weapon_fineff(attack, defend, weapon));
     }
 protected:
     spectral_weapon_fineff(const actor &attack, const actor &defend,
-                           bool is_offhand)
-        : final_effect(&attack, &defend, coord_def()), offhand(is_offhand)
+                           const item_def *wpn)
+        : final_effect(&attack, &defend, coord_def()), weapon(wpn)
     {
     }
 
-    bool offhand;
+    const item_def *weapon;
 };
 
 class lugonu_meddle_fineff : public final_effect

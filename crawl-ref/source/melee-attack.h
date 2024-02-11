@@ -30,7 +30,10 @@ enum unarmed_attack_type
 class melee_attack : public attack
 {
 public:
-    // mon_attack_def stuff
+    // For monsters, attack_number indicates which of their attacks is used.
+    // For players, attack_number is used when using off-hand weapons, and
+    // indicates whether this is their primary attack or their follow-up.
+    // Note that we randomize which hand is used for the primary attack.
     int       attack_number;
     int       effective_attack_number;
 
@@ -38,7 +41,6 @@ public:
     bool         cleaving;        // additional attack from cleaving
     bool         is_multihit;     // quick blade follow-up attack
     bool         is_riposte;      // fencers' retaliation attack
-    bool         is_off_hand;     // used by two-weapon players only
     bool         is_projected;    // projected weapon spell attack
     int          charge_pow;      // electric charge bonus damage
     bool         never_cleave;    // if this attack shouldn't trigger cleave
@@ -50,10 +52,12 @@ public:
 
 public:
     melee_attack(actor *attacker, actor *defender,
-                 int attack_num = -1, int effective_attack_num = -1,
-                 bool is_offhand = false);
+                 int attack_num = 0, int effective_attack_num = 0);
 
-    // Applies attack damage and other effects.
+    void set_weapon(item_def *weapon, bool offhand = false);
+
+    bool launch_attack_set();
+    bool swing_with(item_def &weapon, bool offhand);
     bool attack();
     int calc_to_hit(bool random) override;
     int post_roll_to_hit_modifiers(int mhit, bool random) override;
@@ -166,7 +170,6 @@ private:
     bool player_unrand_bad_attempt(const item_def *offhand,
                                    bool check_only = false);
     void _defender_die();
-    void launch_offhand_attack(item_def &offhand);
     void handle_spectral_brand();
 
     // Added in, were previously static methods of fight.cc
@@ -175,9 +178,12 @@ private:
                                      bool needs_bite_msg = false);
     bool _vamp_wants_blood_from_monster(const monster* mon);
 
-    bool can_reach();
+    bool can_reach(int dist);
 
     item_def *offhand_weapon() const;
+
+    // XXX: set up a copy constructor instead?
+    void copy_to(melee_attack &other);
 
     vorpal_damage_type damage_type;
 };

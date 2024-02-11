@@ -343,7 +343,7 @@ bool fight_melee(actor *attacker, actor *defender, bool *did_hit, bool simu)
             return false;
         }
 
-        const bool success = attk.attack();
+        const bool success = attk.launch_attack_set();
         if (attk.cancel_attack)
             you.turn_is_over = false;
         else
@@ -933,7 +933,7 @@ bool force_player_cleave(coord_def target)
     return false;
 }
 
-bool attack_cleaves(const actor &attacker, int which_attack)
+bool attack_cleaves(const actor &attacker, const item_def *weap)
 {
     if (attacker.is_player()
         && (you.form == transformation::storm || you.duration[DUR_CLEAVE]))
@@ -946,7 +946,6 @@ bool attack_cleaves(const actor &attacker, int which_attack)
         return true;
     }
 
-    const item_def* weap = attacker.weapon(which_attack);
     return weap && weapon_cleaves(*weap);
 }
 
@@ -981,7 +980,7 @@ bool weapon_multihits(const item_def *weap)
  */
 void get_cleave_targets(const actor &attacker, const coord_def& def,
                         list<actor*> &targets, int which_attack,
-                        bool force_cleaving)
+                        bool force_cleaving, const item_def *weapon)
 {
     // Prevent scanning invalid coordinates if the attacker dies partway through
     // a cleave (due to hitting explosive creatures, or perhaps other things)
@@ -991,10 +990,10 @@ void get_cleave_targets(const actor &attacker, const coord_def& def,
     if (actor_at(def))
         targets.push_back(actor_at(def));
 
-    if (!force_cleaving && !attack_cleaves(attacker, which_attack))
+    const item_def* weap = weapon ? weapon : attacker.weapon(which_attack);
+    if (!force_cleaving && !attack_cleaves(attacker, weap))
         return;
 
-    const item_def* weap = attacker.weapon(which_attack);
     const coord_def atk = attacker.pos();
     //If someone adds a funky reach which isn't just a number
     //They will need to special case it here.
@@ -1023,8 +1022,7 @@ void get_cleave_targets(const actor &attacker, const coord_def& def,
 void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              int attack_number, int effective_attack_number,
                              wu_jian_attack_type wu_jian_attack,
-                             bool is_projected, bool is_cleaving,
-                             bool is_off_hand)
+                             bool is_projected, bool is_cleaving)
 {
     if (!attacker.alive())
         return;
@@ -1040,7 +1038,7 @@ void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                 || reaching))
         {
             melee_attack attck(&attacker, def, attack_number,
-                               ++effective_attack_number, is_off_hand);
+                               ++effective_attack_number);
 
             attck.wu_jian_attack = wu_jian_attack;
             attck.is_projected = is_projected;

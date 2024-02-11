@@ -1702,7 +1702,7 @@ static void _AUTUMN_KATANA_melee_effects(item_def* /*weapon*/, actor* attacker,
     {
         melee_attack atk(attacker, targets[i]);
         atk.is_projected = true;
-        atk.attack();
+        atk.launch_attack_set();
 
         if (!attacker->alive())
             break;

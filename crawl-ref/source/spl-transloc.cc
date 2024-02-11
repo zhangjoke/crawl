@@ -738,7 +738,7 @@ spret electric_charge(int powc, bool fail, const coord_def &target)
 
     melee_attack charge_atk(&you, target_mons);
     charge_atk.charge_pow = powc + 50 * grid_distance(initial_pos, you.pos());
-    charge_atk.attack();
+    charge_atk.launch_attack_set();
 
     // Normally this is 10 aut (times haste, slow), but slow weapons
     // take longer. Most relevant for low-skill players and Dark Maul.
@@ -1287,7 +1287,7 @@ spret cast_manifold_assault(int pow, bool fail, bool real)
 
         melee_attack atk(&you, targets[i]);
         atk.is_projected = true;
-        atk.attack();
+        atk.launch_attack_set();
 
         // Only apply delay once, not quadratically.
         if (i == 0)

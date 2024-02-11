@@ -3139,7 +3139,7 @@ static bool _oni_drunken_swing()
             attk.never_cleave = true;
 
             if (!attk.would_prompt_player())
-                attk.attack();
+                attk.launch_attack_set();
         }
 
         return true;
