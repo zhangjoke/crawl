@@ -359,7 +359,10 @@ bool melee_attack::handle_phase_dodged()
                 do_minotaur_retaliation();
             }
 
-            // Retaliations can kill!
+            if (defender->is_player() && you.has_mutation(MUT_GLOWING))
+                do_glowfire();
+
+            // Retaliations and glowfire can kill!
             if (!attacker->alive())
                 return false;
 
@@ -3607,6 +3610,23 @@ void melee_attack::do_starlight()
     }
 }
 
+/** For the glowing mutation's fire effect, only against monsters.
+ */
+void melee_attack::do_glowfire()
+{
+    static const vector<string> glowfire_msgs = {
+        "@The_monster@ is burned by the heat from your body!",
+        "@The_monster@ is set aflame by your high temperature!",
+        "@The_monster@ is scorched by the fire within you!",
+    };
+
+    if (one_chance_in(5) && glowfire_monster(attacker->as_monster(), 5))
+    {
+        string msg = *random_iterator(glowfire_msgs);
+        msg = do_mon_str_replacements(msg, *attacker->as_monster(), S_SILENT);
+        mpr(msg);
+    }
+}
 
 /**
  * Launch a counterattack against the attacker. No sanity checks;

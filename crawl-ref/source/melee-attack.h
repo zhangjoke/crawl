@@ -117,6 +117,7 @@ private:
 
     /* Item Effects */
     void do_starlight();
+    void do_glowfire();
 
     /* Brand / Attack Effects */
     bool do_knockback(bool slippery);

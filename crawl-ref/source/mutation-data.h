@@ -2450,7 +2450,7 @@ static const mutation_def mut_data[] =
   {"You feel long-lived.", "", ""},
 },
 
-{ MUT_GLOWING, 0, 1, mutflag::bad, false, "glowing",
+{ MUT_GLOWING, 1, 1, mutflag::bad, false, "glowing",
   {"You glow in the dark.", "", ""},
   {"Your body begins glowing.", "", ""},
   {"You feel a bit dim.", "", ""},

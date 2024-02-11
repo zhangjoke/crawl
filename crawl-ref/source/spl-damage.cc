@@ -3265,6 +3265,34 @@ spret cast_dazzling_flash(int pow, bool fail, bool tracer)
     return spret::success;
 }
 
+// XXX: Mostly duplicated from cast_scorch().
+static void _burn_monster(monster * mons, int pow)
+{
+    const int base_dam = scorch_damage(pow, true).roll();
+    const int post_ac_dam = max(0, mons->apply_ac(base_dam));
+
+    bolt beam;
+    beam.flavour = BEAM_FIRE;
+    const int damage = mons_adjust_flavoured(mons, beam, post_ac_dam);
+    _player_hurt_monster(*mons, damage, beam.flavour);
+}
+
+bool glowfire_monster(monster * mons, int pow)
+{
+    if (!mons || mons->res_fire() >= 3)
+        return false;
+
+    // XXX: Don't use the same chance mechanism as dazzle_monster() here.
+    const int numerator = dazzle_chance_numerator(mons->get_hit_dice());
+    if (x_chance_in_y(numerator, dazzle_chance_denom(pow)))
+    {
+        _burn_monster(mons, pow);
+        return true;
+    }
+
+    return false;
+}
+
 static bool _toxic_can_affect(const actor *act)
 {
     if (act->is_monster() && act->as_monster()->submerged())
