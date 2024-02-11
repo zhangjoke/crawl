@@ -608,7 +608,15 @@ static void _player_shoot(bolt &pbolt, item_def &item, item_def const *launcher)
 // refactored to be a method of quiver::ammo_action.
 void throw_it(quiver::action &a)
 {
-    const item_def *launcher = a.get_launcher();
+    const item_def *primary = a.get_launcher();
+    const item_def *offhand = you.offhand_weapon();
+    const item_def *launcher = primary;
+    const item_def *alt_launcher = offhand;
+    if (primary && offhand && is_range_weapon(*offhand) && coinflip())
+    {
+        launcher = offhand;
+        alt_launcher = primary;
+    }
     // launchers have get_item set to the launcher. But, if we are tossing
     // the launcher itself, get_launcher() will be nullptr.
     // XX can this api be simplified now that projectiles and launchers are
@@ -703,19 +711,15 @@ void throw_it(quiver::action &a)
     if (ammo_slot != -1 && (pbolt.item_mulches || !_returning(item)))
         dec_inv_item_quantity(ammo_slot, 1);
 
-    if (launcher)
+    if (launcher && alt_launcher && is_range_weapon(*alt_launcher))
     {
-        item_def *offhand = you.offhand_weapon();
-        if (offhand && is_range_weapon(*offhand))
-        {
-            item_def alt_fake_proj;
-            populate_fake_projectile(*offhand, alt_fake_proj);
+        item_def alt_fake_proj;
+        populate_fake_projectile(*alt_launcher, alt_fake_proj);
 
-            bolt alt_pbolt;
-            alt_pbolt.set_target(a.target);
-            _setup_missile_beam(&you, alt_pbolt, alt_fake_proj, offhand);
-            _player_shoot(alt_pbolt, alt_fake_proj, launcher);
-        }
+        bolt alt_pbolt;
+        alt_pbolt.set_target(a.target);
+        _setup_missile_beam(&you, alt_pbolt, alt_fake_proj, alt_launcher);
+        _player_shoot(alt_pbolt, alt_fake_proj, alt_launcher);
     }
 
     // ...any monster nearby can see that something has been thrown, even
@@ -752,7 +756,8 @@ static void _player_shoot(bolt &pbolt, item_def &item, item_def const *launcher)
         }
         else
             count_action(CACT_FIRE, launcher->sub_type);
-    } else if (is_thrown)
+    }
+    else if (is_thrown)
     {
         practise_throwing((missile_type)item.sub_type);
         count_action(CACT_THROW, item.sub_type, OBJ_MISSILES);
