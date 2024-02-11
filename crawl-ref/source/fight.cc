@@ -337,7 +337,7 @@ bool fight_melee(actor *attacker, actor *defender, bool *did_hit, bool simu)
         // Check if the player is fighting with something unsuitable,
         // or someone unsuitable.
         if (you.can_see(*defender) && !simu
-            && !wielded_weapon_check(attk.weapon))
+            && !wielded_weapon_check(you.weapon()))
         {
             you.turn_is_over = false;
             return false;
