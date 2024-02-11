@@ -97,7 +97,7 @@ int dazzle_chance_denom(int pow);
 bool dazzle_monster(monster *mon, int pow);
 spret cast_dazzling_flash(int pow, bool fail, bool tracer = false);
 
-bool glowfire_monster(monster *mon, int pow);
+void glowfire_monster(monster *mon);
 
 spret cast_toxic_radiance(actor *caster, int pow, bool fail = false,
                                bool mon_tracer = false);

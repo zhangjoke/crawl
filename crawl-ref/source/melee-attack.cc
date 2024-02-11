@@ -3614,18 +3614,8 @@ void melee_attack::do_starlight()
  */
 void melee_attack::do_glowfire()
 {
-    static const vector<string> glowfire_msgs = {
-        "@The_monster@ is burned by the heat from your body!",
-        "@The_monster@ is set aflame by your high temperature!",
-        "@The_monster@ is scorched by the fire within you!",
-    };
-
-    if (one_chance_in(5) && glowfire_monster(attacker->as_monster(), 5))
-    {
-        string msg = *random_iterator(glowfire_msgs);
-        msg = do_mon_str_replacements(msg, *attacker->as_monster(), S_SILENT);
-        mpr(msg);
-    }
+    if (one_chance_in(5))
+        glowfire_monster(attacker->as_monster());
 }
 
 /**

@@ -3277,20 +3277,25 @@ static void _burn_monster(monster * mons, int pow)
     _player_hurt_monster(*mons, damage, beam.flavour);
 }
 
-bool glowfire_monster(monster * mons, int pow)
+void glowfire_monster(monster *mons)
 {
     if (!mons || mons->res_fire() >= 3)
-        return false;
+        return;
 
-    // XXX: Don't use the same chance mechanism as dazzle_monster() here.
+    const int power = 5;
     const int numerator = dazzle_chance_numerator(mons->get_hit_dice());
-    if (x_chance_in_y(numerator, dazzle_chance_denom(pow)))
-    {
-        _burn_monster(mons, pow);
-        return true;
-    }
+    if (!x_chance_in_y(numerator, dazzle_chance_denom(power)))
+        return; // XXX: do we need both this and the 1/5 chance earlier?
 
-    return false;
+    static const vector<string> glowfire_msgs = {
+        "@The_monster@ is burned by the heat from your body!",
+        "@The_monster@ is set aflame by your high temperature!",
+        "@The_monster@ is scorched by the fire within you!",
+    };
+
+    string msg = *random_iterator(glowfire_msgs);
+    mpr(do_mon_str_replacements(msg, *mons, S_SILENT));
+    _burn_monster(mons, power);
 }
 
 static bool _toxic_can_affect(const actor *act)
