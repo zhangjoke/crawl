@@ -283,7 +283,7 @@ void list_armour()
         estr << ((i == EQ_CLOAK)       ? "Cloak  " :
                  (i == EQ_HELMET)      ? "Helmet " :
                  (i == EQ_GLOVES)      ? "Gloves " :
-                 (i == EQ_OFFHAND)     ? "Shield"  :
+                 (i == EQ_OFFHAND)     ? "Shield "  :
                  (i == EQ_BODY_ARMOUR) ? "Armour " :
                  (i == EQ_BOOTS)       ?
                    (you.wear_barding() ? "Barding"
