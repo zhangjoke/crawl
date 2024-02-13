@@ -971,12 +971,15 @@ bool melee_attack::launch_attack_set()
     if (!attacker->is_player())
         return attack();
 
+    // Calculate this first, in case the defender dies.
+    const bool should_rev = you.has_mutation(MUT_WARMUP_STRIKES)
+                            && defender && !defender->is_player()
+                            && !defender->wont_attack()
+                            && !mons_is_firewood(*defender->as_monster())
+                            && one_chance_in(wu_jian_number_of_targets);
     bool success = run_attack_set();
-    if (you.has_mutation(MUT_WARMUP_STRIKES)
-        && one_chance_in(wu_jian_number_of_targets))
-    {
+    if (should_rev)
         you.rev_up(you.attack_delay().roll());
-    }
     return success;
 }
 
