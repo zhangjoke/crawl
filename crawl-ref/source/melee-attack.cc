@@ -980,7 +980,12 @@ bool melee_attack::launch_attack_set()
     item_def *primary = you.weapon();
     item_def *offhand = you.offhand_weapon();
     if (!primary || !offhand)
+    {
+        // Don't launch UC attacks when you have an offhand weapon.
+        if (offhand)
+            set_weapon(offhand);
         return attack();
+    }
 
     ASSERT(!attack_number);
 
