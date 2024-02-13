@@ -8172,18 +8172,18 @@ int player::rev_percent() const
 
 void player::rev_down(int dur)
 {
-    // Drop from 100% to 0 in about 27 normal turns (270 dAut).
-    const int perc_lost = div_rand_round(dur * 10, 27);
+    // Drop from 100% to 0 in about 12 normal turns (120 aut).
+    const int perc_lost = div_rand_round(dur * 5, 6);
     you.props[REV_PERCENT_KEY] = max(0, you.rev_percent() - perc_lost);
 }
 
 void player::rev_up(int dur)
 {
-    // We want to hit 50% rev, where penalties vanish, in 40 dAut on average.
-    // Over that time, we'll lose 40*10/27 = ~15% to rev_down().
-    // So we want to gain an average of 65/40 = 13/8 rev% per dAut.
-    // Fuzz it between 10/8 and 16/8 to avoid tracking.
-    const int perc_gained = div_rand_round(random_range(dur * 10, dur * 16), 8);
+    // We want to hit 66% rev, where penalties vanish, in 40 aut on average.
+    // Over that time, we'll lose 40*5/6 = ~34% to rev_down().
+    // So we want to gain an average of (66+34)/40 = ~5/2 rev% per aut.
+    // Fuzz it between 4/2 and 6/2 (ie 2x to 3x) to avoid tracking.
+    const int perc_gained = random_range(dur * 2, dur * 3);
     you.props[REV_PERCENT_KEY] = min(100, you.rev_percent() + perc_gained);
 }
 
