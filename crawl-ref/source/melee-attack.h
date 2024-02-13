@@ -92,6 +92,7 @@ private:
     bool attack_chops_heads(int damage_done);
     void decapitate();
 
+    bool run_attack_set();
     bool swing_with(item_def &weapon, bool offhand);
     void force_cleave(item_def &weapon, coord_def target);
 
@@ -165,6 +166,7 @@ private:
     bool player_good_stab() override;
     void player_announce_aux_hit();
     string charge_desc();
+    string weapon_desc();
     void player_warn_miss();
     void player_weapon_upsets_god();
     bool bad_attempt();

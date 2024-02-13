@@ -892,13 +892,6 @@ bool melee_attack::handle_phase_end()
         monster_die(*attacker->as_monster(), KILL_MISC, NON_MONSTER);
     }
 
-    if (you.has_mutation(MUT_WARMUP_STRIKES)
-        && !cleaving && !is_multihit && !is_riposte && !attack_number
-        && one_chance_in(wu_jian_number_of_targets))
-    {
-        you.rev_up(you.attack_delay().roll());
-    }
-
     return attack::handle_phase_end();
 }
 
@@ -977,6 +970,18 @@ bool melee_attack::launch_attack_set()
 {
     if (!attacker->is_player())
         return attack();
+
+    bool success = run_attack_set();
+    if (you.has_mutation(MUT_WARMUP_STRIKES)
+        && one_chance_in(wu_jian_number_of_targets))
+    {
+        you.rev_up(you.attack_delay().roll());
+    }
+    return success;
+}
+
+bool melee_attack::run_attack_set()
+{
     item_def *primary = you.weapon();
     item_def *offhand = you.offhand_weapon();
     if (!primary || !offhand)
@@ -1798,9 +1803,10 @@ void melee_attack::player_warn_miss()
 {
     did_hit = false;
 
-    mprf("You%s miss %s.",
+    mprf("You%s miss %s%s.",
          evasion_margin_adverb().c_str(),
-         defender->name(DESC_THE).c_str());
+         defender->name(DESC_THE).c_str(),
+         weapon_desc().c_str());
 }
 
 // A couple additive modifiers that should be applied to both unarmed and
@@ -2668,6 +2674,13 @@ string melee_attack::mons_attack_desc()
     return ret;
 }
 
+string melee_attack::weapon_desc()
+{
+    if (!weapon || !you.offhand_weapon())
+        return "";
+    return " with " + weapon->name(DESC_YOUR, false, false, false);
+}
+
 string melee_attack::charge_desc()
 {
     if (!charge_pow || defender->res_elec() > 0)
@@ -2699,9 +2712,10 @@ void melee_attack::announce_hit()
             verb_degree = " " + verb_degree;
         }
 
-        mprf("You %s %s%s%s%s%s",
+        mprf("You %s %s%s%s%s%s%s",
              attack_verb.c_str(),
              defender->name(DESC_THE).c_str(), verb_degree.c_str(),
+             weapon_desc().c_str(),
              charge_desc().c_str(), debug_damage_number().c_str(),
              attack_strength_punctuation(damage_done).c_str());
     }
