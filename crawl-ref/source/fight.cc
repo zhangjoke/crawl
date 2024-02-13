@@ -1022,11 +1022,12 @@ void get_cleave_targets(const actor &attacker, const coord_def& def,
 void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              int attack_number, int effective_attack_number,
                              wu_jian_attack_type wu_jian_attack,
-                             bool is_projected, bool is_cleaving)
+                             bool is_projected, bool is_cleaving,
+                             item_def *weapon)
 {
     if (!attacker.alive())
         return;
-    const item_def* weap = attacker.weapon(attack_number);
+    const item_def* weap = weapon ? weapon : attacker.weapon(attack_number);
     const bool reaching = weap && weapon_reach(*weap) > REACH_NONE;
     while (attacker.alive() && !targets.empty())
     {
@@ -1039,6 +1040,8 @@ void attack_multiple_targets(actor &attacker, list<actor*> &targets,
         {
             melee_attack attck(&attacker, def, attack_number,
                                ++effective_attack_number);
+            if (weapon)
+                attck.set_weapon(weapon, true);
 
             attck.wu_jian_attack = wu_jian_attack;
             attck.is_projected = is_projected;

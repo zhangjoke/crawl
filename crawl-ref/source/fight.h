@@ -63,7 +63,8 @@ void attack_multiple_targets(actor &attacker, list<actor*> &targets,
                              wu_jian_attack_type wu_jian_attack
                                = WU_JIAN_ATTACK_NONE,
                              bool is_projected = false,
-                             bool is_cleave = true);
+                             bool is_cleave = true,
+                             item_def *weapon = nullptr);
 
 class attack;
 int to_hit_pct(const monster_info& mi, attack &atk, bool melee);

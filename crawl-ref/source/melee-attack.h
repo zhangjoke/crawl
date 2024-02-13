@@ -53,11 +53,9 @@ public:
 public:
     melee_attack(actor *attacker, actor *defender,
                  int attack_num = 0, int effective_attack_num = 0);
-
     void set_weapon(item_def *weapon, bool offhand = false);
 
     bool launch_attack_set();
-    bool swing_with(item_def &weapon, bool offhand);
     bool attack();
     int calc_to_hit(bool random) override;
     int post_roll_to_hit_modifiers(int mhit, bool random) override;
@@ -93,6 +91,9 @@ private:
     bool consider_decapitation(int damage_done);
     bool attack_chops_heads(int damage_done);
     void decapitate();
+
+    bool swing_with(item_def &weapon, bool offhand);
+    void force_cleave(item_def &weapon, coord_def target);
 
     /* Axe cleaving */
     void cleave_setup();

@@ -835,7 +835,7 @@ bool melee_attack::handle_phase_end()
         // does a cleaving multi-hit attack. God help us.
         attack_multiple_targets(*attacker, extra_hits, attack_number,
                                 effective_attack_number, wu_jian_attack,
-                                is_projected, false);
+                                is_projected, false, mutable_wpn);
         if (attacker->is_player())
             print_wounds(*defender->as_monster());
     }
@@ -848,7 +848,7 @@ bool melee_attack::handle_phase_end()
     {
         attack_multiple_targets(*attacker, cleave_targets, attack_number,
                               effective_attack_number, wu_jian_attack,
-                              is_projected, true);
+                              is_projected, true, mutable_wpn);
     }
 
     // Check for passive mutation effects.
@@ -953,6 +953,19 @@ bool melee_attack::swing_with(item_def &weapon, bool offhand)
     return success;
 }
 
+void melee_attack::force_cleave(item_def &wpn, coord_def target_pos)
+{
+    list<actor*> targets;
+    get_cleave_targets(*attacker, target_pos, targets,
+                       attack_number, false, &wpn);
+    if (targets.empty())
+        return;
+
+    attack_multiple_targets(*attacker, targets, attack_number,
+                            effective_attack_number, wu_jian_attack,
+                            is_projected /*false*/,  true, &wpn);
+}
+
 /**
  * Launches a set of melee attacks. If the player is using two weapons, this
  * launches attacks with the primary and off-hand weapon in a random order.
@@ -979,20 +992,34 @@ bool melee_attack::launch_attack_set()
         second_weapon = primary;
     }
 
+    const coord_def target = defender->pos();
     bool success = swing_with(*first_weapon, first_weapon == offhand);
     if (cancel_attack)
         return success;
+
+    ++attack_number;
+    ++effective_attack_number;
 
     if (!defender
         || !defender->alive()
         || !attacker->alive()
         || dont_harm(*attacker, *defender))
     {
-        // XXX TODO: handle cleaving per force_player_cleave()
+        if (attacker->alive()
+            && !simu
+            && attacker->pos() != target
+            && !is_projected
+            // WJC AOEs mayn't cleave.
+            && wu_jian_attack != WU_JIAN_ATTACK_WHIRLWIND
+            && wu_jian_attack != WU_JIAN_ATTACK_WALL_JUMP
+            && wu_jian_attack != WU_JIAN_ATTACK_TRIGGERED_AUX
+            && attack_cleaves(*attacker, second_weapon))
+        {
+            force_cleave(*second_weapon, target);
+        }
         return true;
     }
 
-    ++effective_attack_number;
     if (swing_with(*second_weapon, second_weapon == offhand))
         success = true;
     ASSERT(!cancel_attack);
